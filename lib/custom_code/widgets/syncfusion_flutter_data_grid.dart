@@ -77,33 +77,7 @@ class _SyncfusionFlutterDataGridState extends State<SyncfusionFlutterDataGrid> {
             ),
           ),
           SfDataGridTheme(
-            data: SfDataGridThemeData(
-              sortIcon: Builder(
-                builder: (context) {
-                  Widget? icon;
-                  String columnName = '';
-                  context.visitAncestorElements((element) {
-                    if (element is GridHeaderCellElement) {
-                      columnName = element.column.columnName;
-                    }
-                    return true;
-                  });
-                  var column = customersDataSource.sortedColumns
-                      .where((element) => element.name == columnName)
-                      .firstOrNull;
-                  if (column != null) {
-                    if (column.sortDirection ==
-                        DataGridSortDirection.ascending) {
-                      icon = const Icon(Icons.arrow_upward_rounded, size: 16);
-                    } else if (column.sortDirection ==
-                        DataGridSortDirection.descending) {
-                      icon = const Icon(Icons.arrow_downward_rounded, size: 16);
-                    }
-                  }
-                  return icon ?? const SizedBox();
-                },
-              ),
-            ),
+            data: SfDataGridThemeData(headerColor: const Color(0xff009889)),
             child: SfDataGrid(
               source: customersDataSource,
               allowSorting: true,
