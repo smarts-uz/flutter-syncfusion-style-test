@@ -48,6 +48,8 @@ class _SyncfusionFlutterDataGridState extends State<SyncfusionFlutterDataGrid> {
     super.dispose();
   }
 
+  // final CustomColumnSizer _customColumnSizer = CustomColumnSizer();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,6 +81,8 @@ class _SyncfusionFlutterDataGridState extends State<SyncfusionFlutterDataGrid> {
           SfDataGridTheme(
             data: SfDataGridThemeData(headerColor: const Color(0xff009889)),
             child: SfDataGrid(
+              // columnWidthMode: ColumnWidthMode.fitByColumnName,
+              columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
               source: customersDataSource,
               allowSorting: true,
               columns: <GridColumn>[
@@ -89,20 +93,27 @@ class _SyncfusionFlutterDataGridState extends State<SyncfusionFlutterDataGrid> {
                         alignment: Alignment.center,
                         child: Text(
                           'ID',
+                          overflow: TextOverflow.ellipsis,
                         ))),
                 GridColumn(
                     columnName: 'created_at',
-                    columnWidthMode: ColumnWidthMode.lastColumnFill,
                     label: Container(
                         padding: EdgeInsets.all(8.0),
                         alignment: Alignment.center,
-                        child: Text('Created Date'))),
+                        child: Text(
+                          'Created Date',
+                          overflow: TextOverflow.ellipsis,
+                        ))),
                 GridColumn(
                     columnName: 'name',
                     label: Container(
                         padding: EdgeInsets.all(8.0),
                         alignment: Alignment.center,
-                        child: Text('Name'))),
+                        child: Text(
+                          'Name',
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ))),
                 GridColumn(
                     columnName: 'job',
                     label: Container(
@@ -110,6 +121,7 @@ class _SyncfusionFlutterDataGridState extends State<SyncfusionFlutterDataGrid> {
                         alignment: Alignment.center,
                         child: Text(
                           'Job',
+                          softWrap: true,
                           overflow: TextOverflow.ellipsis,
                         ))),
                 GridColumn(
@@ -117,13 +129,21 @@ class _SyncfusionFlutterDataGridState extends State<SyncfusionFlutterDataGrid> {
                     label: Container(
                         padding: EdgeInsets.all(8.0),
                         alignment: Alignment.center,
-                        child: Text('Email'))),
+                        child: Text(
+                          'Email',
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ))),
                 GridColumn(
                     columnName: 'salary',
                     label: Container(
                         padding: EdgeInsets.all(8.0),
                         alignment: Alignment.center,
-                        child: Text('Salary'))),
+                        child: Text(
+                          'Salary',
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ))),
               ],
             ),
           ),
@@ -160,8 +180,26 @@ class CustomersDataSource extends DataGridSource {
       return Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
+        child: Text(
+          e.value.toString(),
+          overflow: TextOverflow.ellipsis,
+        ),
       );
     }).toList());
+  }
+}
+
+class CustomColumnSizer extends ColumnSizer {
+  @override
+  double computeCellWidth(GridColumn column, DataGridRow row, Object? cellValue,
+      TextStyle textStyle) {
+    if (column.columnName == 'DOB') {
+      cellValue = DateFormat.yMMMMd('en_US').format(cellValue as DateTime);
+    } else if (column.columnName == 'Salary') {
+      cellValue =
+          NumberFormat.simpleCurrency(decimalDigits: 0).format(cellValue);
+    }
+
+    return super.computeCellWidth(column, row, cellValue, textStyle);
   }
 }
